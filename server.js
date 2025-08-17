@@ -13,8 +13,13 @@ const PORT = process.env.PORT || 3001;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(
+  cors({
+    origin: "https://github.com/deepakkohli1810", // your frontend domain
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // Health check
 app.get("/", (req, res) => {
@@ -38,12 +43,10 @@ app.post("/api/send-email", async (req, res) => {
       console.error(
         "Validation failed: Missing required fields."
       );
-      return res
-        .status(400)
-        .json({
-          error:
-            "Missing required fields: user_name, user_email, or bookingDetails.",
-        });
+      return res.status(400).json({
+        error:
+          "Missing required fields: user_name, user_email, or bookingDetails.",
+      });
     }
 
     // ✅ Extract data with fallbacks
