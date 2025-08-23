@@ -13,10 +13,16 @@ const PORT = process.env.PORT || 3001;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin:
-      "https://github.com/deepakkohli1810/AmritsarWalkingTour", // your frontend domain
+    origin: [
+      "https://deepakkohli1810.github.io", // Your GitHub Pages URL
+      "http://localhost:3000", // For local development
+      "http://localhost:3001", // For local development
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -36,7 +42,7 @@ app.post("/api/send-email", async (req, res) => {
       user_email,
       user_phone,
       user_requests,
-      bookingDetails, // Expected to include tourPrice, vehiclePrice, etc.
+      bookingDetails,
     } = req.body;
 
     // ✅ Validate required fields
@@ -117,7 +123,7 @@ ${user_requests?.trim() ? user_requests : "None provided."}
 
     // ✅ Send Email via Resend
     const { data, error } = await resend.emails.send({
-      from: "Amritsar Walking Tour <onboarding@resend.dev>", // Use your verified domain in production
+      from: "Amritsar Walking Tour <onboarding@resend.dev>",
       to: ["cloudwork18@gmail.com"], // Replace with your actual email
       reply_to: user_email,
       subject: `🎯 New Booking Request from ${user_name}`,
