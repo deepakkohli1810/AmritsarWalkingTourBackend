@@ -15,7 +15,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Middleware
 app.use(
   cors({
-    origin: "https://github.com/deepakkohli1810", // your frontend domain
+    origin:
+      "https://github.com/deepakkohli1810/AmritsarWalkingTour", // your frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
